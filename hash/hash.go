@@ -1,21 +1,13 @@
-package main
+package hash
 
 import (
+	"fmt"
 	"crypto/sha512"
 	"encoding/base64"
-	"fmt"
-	"os"
 )
 
-func main() {
-	if len(os.Args) == 2 {
-		fmt.Println(Hash(os.Args[1]))
-	} else {
-		fmt.Println("Please pass in a single password to hash")
-	}
-}
-
 func Hash(password string) string {
+	fmt.Println("hashing password")
 	pw := []byte(password)
 	hasher := sha512.New()
 	hasher.Write(pw)

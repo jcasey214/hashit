@@ -1,6 +1,13 @@
 # hashit
-base64 encode SHA512 hashed strings
+expose and http endpoint to hash (sha512) and base64 encode strings
 
-## running
+## running locally
 * build with ```go build```
-* run with ```./hashit <string_to_hash>```
+* run with ```./hashit <port>``` (defaults to 8080)
+
+## usage
+the /hash POST endpoint accepts a 'password' form field
+
+example curl: \
+curl -X POST http://localhost:{port}/hash --data password=angryMonkey
+    
