@@ -14,7 +14,9 @@ func CreateServer(port string) chan bool {
 	log.Printf("listening on port %s \n", port)
 
 	done := make(chan bool)
-	http.HandleFunc("/hash", http.HandlerFunc(handler.HashHandler))
+
+	http.HandleFunc("/hash", http.HandlerFunc(handler.CreateHash))
+	http.HandleFunc("/hash/", http.HandlerFunc(handler.GetHashById))
 	http.HandleFunc("/shutdown", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 		srv.Shutdown(ctx)

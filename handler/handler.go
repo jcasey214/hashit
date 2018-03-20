@@ -2,16 +2,15 @@ package handler
 
 import (
 	"net/http"
-	"fmt"
 	"time"
 	"github.com/jcasey214/hashit/hash"
 	"strconv"
+	"strings"
 )
 
 var hashes []string
 
-func HashHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r)
+func CreateHash(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		r.ParseForm()
 		pw := r.FormValue("password")
@@ -22,7 +21,7 @@ func HashHandler(w http.ResponseWriter, r *http.Request) {
 			hashes = append(hashes, "")
 			newIndex := len(hashes) - 1
 			w.Header().Set("Content-Type", "text/plain")
-			go hashPassword(pw, newIndex)
+			go hashAndSave(pw, newIndex)
 			w.Write([]byte(strconv.Itoa(newIndex)))
 		}
 	} else {
@@ -30,8 +29,25 @@ func HashHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func hashPassword(password string, index int) {
-	time.Sleep(5*time.Second)
+func GetHashById(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		id := strings.TrimPrefix(r.URL.Path, "/hash/")
+		index, err := strconv.Atoi(id)
+
+		if err != nil {
+			http.Error(w, "Bad Request", 400)
+		} else if index >= len(hashes) {
+			http.Error(w, "Not Found", 404)
+		} else {
+			w.Write([]byte(hashes[index]))
+		}
+
+	} else {
+		http.Error(w, "Invalid request method", 405)
+	}
+}
+
+func hashAndSave(password string, index int) {
+	time.Sleep(5 * time.Second)
 	hashes[index] = hash.Hash(password)
-	fmt.Println(hashes)
 }
