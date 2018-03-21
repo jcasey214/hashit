@@ -22,7 +22,7 @@ func CreateHash(w http.ResponseWriter, r *http.Request) {
 		pw := r.FormValue("password")
 
 		if pw == "" {
-			http.Error(w, "Missing required field in request", 400)
+			http.Error(w, "Missing required field in request", http.StatusBadRequest)
 		} else {
 			h.mutex.Lock()
 			h.hashes = append(h.hashes, "")
@@ -33,7 +33,7 @@ func CreateHash(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(strconv.Itoa(newIndex)))
 		}
 	} else {
-		http.Error(w, "Invalid request method.", 405)
+		http.Error(w, "Invalid request method.", http.StatusMethodNotAllowed)
 	}
 }
 
@@ -43,7 +43,7 @@ func GetHashById(w http.ResponseWriter, r *http.Request) {
 		index, err := strconv.Atoi(id)
 
 		if err != nil {
-			http.Error(w, "Bad Request", 400)
+			http.Error(w, "Bad Request", http.StatusBadRequest)
 		} else if index >= len(h.hashes) {
 			http.Error(w, "Not Found", 404)
 		} else {
@@ -51,7 +51,7 @@ func GetHashById(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else {
-		http.Error(w, "Invalid request method", 405)
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 	}
 }
 
