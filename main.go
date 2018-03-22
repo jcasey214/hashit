@@ -13,7 +13,7 @@ func main() {
 		port = "8080"
 	}
 
-	doneChan := server.CreateServer(port)
+	doneChan := server.Run(port)
 
 	<-doneChan
 }

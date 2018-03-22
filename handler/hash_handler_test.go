@@ -70,13 +70,13 @@ func TestCreateHash(t *testing.T) {
 	})
 }
 
-func TestGetHashById(t *testing.T) {
+func TestGetHash(t *testing.T) {
 	t.Run("returns a 404 for non-existant id", func(t *testing.T) {
 		data := url.Values{}
 		req, _ := http.NewRequest("GET", "/hash/99", strings.NewReader(data.Encode()))
 
 		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(GetHashById)
+		handler := http.HandlerFunc(GetHash)
 
 		handler.ServeHTTP(rr, req)
 
@@ -92,7 +92,7 @@ func TestGetHashById(t *testing.T) {
 		req, _ := http.NewRequest("GET", "/hash/browns", strings.NewReader(data.Encode()))
 
 		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(GetHashById)
+		handler := http.HandlerFunc(GetHash)
 
 		handler.ServeHTTP(rr, req)
 

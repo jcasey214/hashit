@@ -38,7 +38,7 @@ func CreateHash(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func GetHashById(w http.ResponseWriter, r *http.Request) {
+func GetHash(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		id := strings.TrimPrefix(r.URL.Path, "/hash/")
 		index, err := strconv.Atoi(id)
