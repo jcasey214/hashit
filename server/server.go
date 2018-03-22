@@ -22,6 +22,7 @@ func CreateServer(port string) chan bool {
 	http.HandleFunc("/shutdown", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 		srv.Shutdown(ctx)
+		w.WriteHeader(http.StatusOK)
 		doneChan <- true
 	}))
 
