@@ -2,8 +2,7 @@
 hash (sha512) and base64 encode strings
 
 ## running locally
-* build with ```go build```
-* run with ```./hashit <port>``` (defaults to 8080)
+* run with ```go run main.go <port>``` (defaults to 8080)
 
 ## usage
 1. the /hash POST endpoint accepts a 'password' form field and returns the id of the hash
