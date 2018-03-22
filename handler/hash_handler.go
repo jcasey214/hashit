@@ -3,10 +3,11 @@ package handler
 import (
 	"net/http"
 	"time"
-	"github.com/jcasey214/hashit/hash"
 	"strconv"
 	"strings"
 	"sync"
+	"log"
+	"github.com/jcasey214/hashit/hash"
 )
 
 type HashStore struct {
@@ -28,8 +29,8 @@ func CreateHash(w http.ResponseWriter, r *http.Request) {
 			h.hashes = append(h.hashes, "")
 			newIndex := len(h.hashes) - 1
 			h.mutex.Unlock()
-			w.Header().Set("Content-Type", "text/plain")
 			go hashAndSave(pw, newIndex)
+			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte(strconv.Itoa(newIndex)))
 		}
 	} else {
@@ -44,12 +45,11 @@ func GetHashById(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			http.Error(w, "Bad Request", http.StatusBadRequest)
-		} else if index >= len(h.hashes) {
+		} else if index >= len(h.hashes) || index < 0 {
 			http.Error(w, "Not Found", 404)
 		} else {
 			w.Write([]byte(h.hashes[index]))
 		}
-
 	} else {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 	}
@@ -57,5 +57,6 @@ func GetHashById(w http.ResponseWriter, r *http.Request) {
 
 func hashAndSave(password string, index int) {
 	time.Sleep(5 * time.Second)
-	h.hashes[index] = hash.Hash(password)
+	log.Print("saving hash")
+	h.hashes[index] = hash.Create(password)
 }

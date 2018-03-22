@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 )
 
-func Hash(password string) string {
+func Create(password string) string {
 	pw := []byte(password)
 	hasher := sha512.New()
 	hasher.Write(pw)

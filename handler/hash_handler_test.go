@@ -87,7 +87,7 @@ func TestGetHashById(t *testing.T) {
 		}
 	})
 
-	t.Run("returns a 404 for non int id", func(t *testing.T) {
+	t.Run("returns a 400 for non int id", func(t *testing.T) {
 		data := url.Values{}
 		req, _ := http.NewRequest("GET", "/hash/browns", strings.NewReader(data.Encode()))
 
