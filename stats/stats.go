@@ -9,7 +9,6 @@ import (
 type ServerStats struct {
 	Total         int     `json:"total"`
 	Average       float32 `json:"average"`
-	totalDuration float32
 	mutex         sync.Mutex
 }
 
@@ -30,10 +29,12 @@ func Recorder(h http.HandlerFunc) http.HandlerFunc {
 
 func updateStats(duration float32) {
 	CurrentStats.mutex.Lock()
+	CurrentStats.Average = calculateNewAverage(duration)
 	CurrentStats.Total += 1
-	CurrentStats.totalDuration += duration
-	CurrentStats.Average = CurrentStats.totalDuration / float32(CurrentStats.Total)
 	CurrentStats.mutex.Unlock()
+}
+func calculateNewAverage(duration float32) float32 {
+	return ((CurrentStats.Average * float32(CurrentStats.Total)) + duration) / (float32(CurrentStats.Total) + 1)
 }
 
 func makeTimestamp() int64 {
