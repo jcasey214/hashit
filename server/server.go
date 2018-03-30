@@ -10,9 +10,9 @@ import (
 	"github.com/jcasey214/hashit/stats"
 )
 
-func Run(port string) chan bool {
-	srv := http.Server{Addr: fmt.Sprintf(":%s", port)}
-	log.Printf("listening on port %s \n", port)
+func Run(port int) chan bool {
+	srv := http.Server{Addr: fmt.Sprintf(":%d", port)}
+	log.Printf("listening on port %d \n", port)
 
 	doneChan := make(chan bool)
 

@@ -1,19 +1,16 @@
 package main
 
 import (
-	"os"
+	"flag"
 	"github.com/jcasey214/hashit/server"
 )
 
 func main() {
-	var port string
-	if len(os.Args) > 1 {
-		port = os.Args[1]
-	} else {
-		port = "8080"
-	}
+	port := flag.Int("port", 8080, "port to launch server on")
 
-	doneChan := server.Run(port)
+	flag.Parse()
+
+	doneChan := server.Run(*port)
 
 	<-doneChan
 }
